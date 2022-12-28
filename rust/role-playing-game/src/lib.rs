@@ -2,6 +2,8 @@
 // to enable stricter warnings.
 #![allow(unused)]
 
+use std::cmp::min;
+
 pub struct Player {
     pub health: u32,
     pub mana: Option<u32>,
@@ -39,11 +41,7 @@ impl Player {
                 }
             }
             None => {
-                self.health = if self.health > mana_cost {
-                    self.health - mana_cost
-                } else {
-                    0
-                };
+                self.health = self.health - min(self.health, mana_cost);
                 0
             }
         }
