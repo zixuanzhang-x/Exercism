@@ -23,6 +23,6 @@ impl Clock {
 
 impl Display for Clock {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{:0>2}:{:0>2}", self.minutes / HOUR, self.minutes % HOUR)
+        write!(f, "{:02}:{:02}", self.minutes / HOUR, self.minutes % HOUR)
     }
 }
