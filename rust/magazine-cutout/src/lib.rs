@@ -6,17 +6,17 @@ use std::collections::HashMap;
 use std::ptr::hash;
 
 pub fn can_construct_note(magazine: &[&str], note: &[&str]) -> bool {
-    let magazine_map = hashmap_from(magazine);
-    let note_map = hashmap_from(note);
+    let magazine_map = magazine.iter().fold(HashMap::new(), |mut map, word| {
+        map.entry(word).and_modify(|count| *count += 1).or_insert(1);
+        map
+    });
 
-    for (word, note_count) in note_map {
-        match magazine_map.get(word) {
-            Some(&magazine_count) if magazine_count >= note_count => {}
-            _ => return false
-        }
-    }
+    let note_map = note.iter().fold(HashMap::new(), |mut map, word| {
+        map.entry(word).and_modify(|count| *count += 1).or_insert(1);
+        map
+    });
 
-    true
+    note_map.iter().all(|(word, count)| magazine_map.get(word).unwrap_or(&0) >= count)
 }
 
 fn hashmap_from<'a>(words: &[&'a str]) -> HashMap<&'a str, u32> {
